@@ -6,6 +6,7 @@ import re
 import typing
 import json
 import math
+from prettytable import PrettyTable
 
 
 # globals
@@ -69,21 +70,29 @@ def create_final_schedule(
                     date_dict[new_date].append(plant)
         date += td
     print(date_dict)
-    pass
+    return date_dict
 
 create_final_schedule(schedule_per_plant(parse_json('plant_info.json'), 12, date_obj), 12, date_obj)
 
 
 
 def create_table(final_schedule: dict) -> None:
-    # Your code here
-    pass
+    my_table = PrettyTable()
+
+    for day in final_schedule:
+        print(day, final_schedule[day])
+        while len(final_schedule[day]) < 12:
+            final_schedule[day].append("")
+        my_table.add_column(str(day), final_schedule[day])
+    with open('schedule.txt', 'w') as f:
+        f.write(str(my_table))
+
 
 
 def main(weeks: int, start_date: date_obj) -> None:
-    # Your code here
+    create_table(create_final_schedule(schedule_per_plant(parse_json('plant_info.json'), 12, date_obj), 12, date_obj))
     pass
 
 
 if __name__ == "__main__":
-    main()
+    main(12, date_obj)
