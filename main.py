@@ -72,7 +72,7 @@ def create_final_schedule(
     # print(date_dict)
     return date_dict
 
-create_final_schedule(schedule_per_plant(parse_json('plant_info.json'), 12, date_obj), 12, date_obj)
+# create_final_schedule(schedule_per_plant(parse_json('plant_info.json'), 12, date_obj), 12, date_obj)
 
 
 
