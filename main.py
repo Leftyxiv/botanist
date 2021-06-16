@@ -4,6 +4,7 @@ import datetime
 import json
 import re
 import typing
+import json
 
 
 # globals
@@ -13,9 +14,14 @@ date_obj = typing.NewType("dat_obj", datetime.date)
 
 
 def parse_json(filename: str) -> dict:
-    # Your code here
-    pass
-
+    d = {}
+    with open(filename) as f:
+        data = f.read()
+    obj = json.loads(data)
+    for plant in obj:
+        d[plant['name']] = { 'water_after': plant['water_after'] }
+    print(d)
+parse_json('plant_info.json')
 
 def schedule_per_plant(plant_dict: dict, weeks: int, start_date: date_obj) -> dict:
     # Your code here
