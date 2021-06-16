@@ -5,13 +5,14 @@ import json
 import re
 import typing
 import json
+import math
 
 
 # globals
 INPUT_FILE = "plant_info.json"
 OUTPUT_FILE = "schedule.txt"
 date_obj = typing.NewType("dat_obj", datetime.date)
-
+# date_obj = datetime.date
 
 def parse_json(filename: str) -> dict:
     d = {}
@@ -20,18 +21,28 @@ def parse_json(filename: str) -> dict:
     obj = json.loads(data)
     for plant in obj:
         d[plant['name']] = { 'water_after': plant['water_after'] }
-    print(d)
-parse_json('plant_info.json')
+    return d
 
 def schedule_per_plant(plant_dict: dict, weeks: int, start_date: date_obj) -> dict:
-    # Your code here
-    pass
+    for plant in plant_dict:
+        water_period = plant_dict[plant]['water_after'][0:-4]
+        td = datetime.timedelta(int(water_period))
+        water_times = math.floor((weeks * 7) / int(water_period))
+        last_date = start_date(datetime.datetime(2019, 12, 16))
+        for _ in range(water_times):
+            if not plant_dict[plant].get('schedule'):
+                plant_dict[plant]['schedule'] = [last_date]
+            else:
+                plant_dict[plant]['schedule'].append(last_date)
+            last_date = last_date + td
+    print(plant_dict)
+    return plant_dict
 
+schedule_per_plant(parse_json('plant_info.json'), 12, date_obj)
 
 def create_final_schedule(
     plant_dict_with_schedule: dict, weeks: int, start_date: date_obj
 ) -> dict:
-    # Your code here
     pass
 
 
