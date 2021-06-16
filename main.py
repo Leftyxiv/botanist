@@ -69,7 +69,7 @@ def create_final_schedule(
                     new_date = weekend_filter(date)
                     date_dict[new_date].append(plant)
         date += td
-    print(date_dict)
+    # print(date_dict)
     return date_dict
 
 create_final_schedule(schedule_per_plant(parse_json('plant_info.json'), 12, date_obj), 12, date_obj)
@@ -80,7 +80,7 @@ def create_table(final_schedule: dict) -> None:
     my_table = PrettyTable()
 
     for day in final_schedule:
-        print(day, final_schedule[day])
+        # print(day, final_schedule[day])
         while len(final_schedule[day]) < 12:
             final_schedule[day].append("")
         my_table.add_column(str(day), final_schedule[day])
