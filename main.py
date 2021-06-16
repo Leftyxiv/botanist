@@ -40,28 +40,39 @@ def schedule_per_plant(plant_dict: dict, weeks: int, start_date: date_obj) -> di
 
 # schedule_per_plant(parse_json('plant_info.json'), 12, date_obj)
 
+def weekend_filter(date) -> date_obj:
+    td = datetime.timedelta(1)
+    if date.weekday() == 5:
+        return date - td
+    elif date.weekday() == 6:
+        return date + td
+    else:
+        return date
+
 def create_final_schedule(
     plant_dict_with_schedule: dict, weeks: int, start_date: date_obj
 ) -> dict:
+    dict_set_date = start_date(datetime.date(2019, 12, 16))
     date = start_date(datetime.date(2019, 12, 16))
     td = datetime.timedelta(1)
     date_dict = {}
     for _ in range(7 * weeks):
-        date_dict[date] = []
+        date_dict[dict_set_date] = []
+        dict_set_date += td
+    # print(date_dict)
+    for _ in range(7 * weeks):
+        # date_dict[date] = []
         for plant in plant_dict_with_schedule:
             for day in plant_dict_with_schedule[plant]['schedule']:
                 if day == date:
-                    date_dict[date].append(plant)
+                    new_date = weekend_filter(date)
+                    date_dict[new_date].append(plant)
         date += td
     print(date_dict)
     pass
 
 create_final_schedule(schedule_per_plant(parse_json('plant_info.json'), 12, date_obj), 12, date_obj)
 
-
-def weekend_filter(date) -> date_obj:
-    # Your code here
-    pass
 
 
 def create_table(final_schedule: dict) -> None:
